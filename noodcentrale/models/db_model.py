@@ -1,7 +1,7 @@
 import sqlite3
-db_name = "noodcentrale.db"
+db_name = "noodcentrale.db"  #REVIEW1: HIER NIET INITIALISEREN
 
-class Database:
+class Database:  #Opzet van deze klasse is om het database model te vormen, niet om de database te zijn => REVIEW2: WIJZIG NAAM CLASS    
     def __init__(self, db_name):
         self.db_name = db_name
         self.create_tables()
@@ -41,6 +41,7 @@ class Database:
                 )
             """)
             conn.commit()
+            #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode
 
     # ---------- Gebruikers ----------
     def add_user(self, naam, telefoon_nummer):
@@ -49,6 +50,7 @@ class Database:
             cur = conn.cursor()
             cur.execute("INSERT INTO users (naam, telefoon_nummer) VALUES (?, ?)", (naam, telefoon_nummer))
             conn.commit()
+        #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode
 
     def get_all_users(self):
         """Haal alle gebruikers op."""
@@ -56,6 +58,8 @@ class Database:
             cur = conn.cursor()
             cur.execute("SELECT id, naam, telefoon_nummer FROM users")
             return cur.fetchall()
+        #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
+
 
     # ---------- Scenarios ----------
     def add_scenario(self, naam, icoon):
@@ -64,6 +68,8 @@ class Database:
             cur = conn.cursor()
             cur.execute("INSERT INTO scenarios (naam, icoon) VALUES (?, ?)", (naam, icoon))
             conn.commit()
+        #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode
+
 
     def get_all_scenarios(self):
         """Haal alle scenario's op."""
@@ -71,6 +77,8 @@ class Database:
             cur = conn.cursor()
             cur.execute("SELECT id, naam, icoon FROM scenarios")
             return cur.fetchall()
+        #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
+
 
     # ---------- Koppelingen ----------
     def link_user_to_scenario(self, user_id, scenario_id):
@@ -82,6 +90,7 @@ class Database:
                 (user_id, scenario_id)
             )
             conn.commit()
+        #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
 
     def get_users_for_scenario(self, scenario_id):
         """Haal alle gebruikers op die gekoppeld zijn aan een scenario."""
@@ -94,10 +103,12 @@ class Database:
                 WHERE su.scenario_id = ?
             """, (scenario_id,))
             return cur.fetchall()
+    #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
 
+
+#REVIEW4: onderstaande code helemaal in commentaar => zie unit testen om te verbeteren.
 # Initialiseer de database
 db = Database(db_name)
-
 """
 # Voor directe testen, uncomment de volgende regels:
 if __name__ == "__main__":
