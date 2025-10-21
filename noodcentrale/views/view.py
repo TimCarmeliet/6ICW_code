@@ -1,12 +1,13 @@
 import tkinter as tk
 from tkinter import ttk, font, simpledialog, messagebox
-
+#REVIEW 1 - commentaar om opbouw leesbaarder te maken
+#OPTIONEEL = getters voorzien voor de attributen + data encapsulatie afdwingen door private maken van de attributen, maar voor eerste versie zeker ok
 class NoodcentraleView:
     def __init__(self, root, controller):
         self.root = root
         self.controller = controller
         self.root.title("Noodcentrale")
-
+        
         scherm_breedte = self.root.winfo_screenwidth()
         scherm_hoogte = self.root.winfo_screenheight()
         self.root.geometry(f"{scherm_breedte}x{scherm_hoogte}")

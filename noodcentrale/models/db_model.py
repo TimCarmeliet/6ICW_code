@@ -1,6 +1,6 @@
 import sqlite3
 
-class Database:
+class Database:  #Opzet van deze klasse is om het database model te vormen, niet om de database te zijn => REVIEW2: WIJZIG NAAM CLASS    
     def __init__(self, db_name):
         self.__db_name = db_name
         self.create_tables()
@@ -53,6 +53,7 @@ class Database:
             cur = conn.cursor()
             cur.execute("INSERT INTO users (naam, telefoon_nummer) VALUES (?, ?)", (naam, telefoon_nummer))
             conn.commit()
+        #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode
 
     def get_all_users(self):
         """Haal alle gebruikers op."""
@@ -116,6 +117,8 @@ class Database:
     #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
 
 
+
+#REVIEW4: onderstaande code helemaal in commentaar => zie unit testen om te verbeteren.
 # Initialiseer de database
 
 # db = Database("noodcentrale.db")
