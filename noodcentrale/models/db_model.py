@@ -1,14 +1,16 @@
 import sqlite3
-db_name = "noodcentrale.db"  #REVIEW1: HIER NIET INITIALISEREN
 
 class Database:  #Opzet van deze klasse is om het database model te vormen, niet om de database te zijn => REVIEW2: WIJZIG NAAM CLASS    
     def __init__(self, db_name):
-        self.db_name = db_name
+        self.__db_name = db_name
         self.create_tables()
+
+    def get_dbnaam(self):
+        return self.__db_name
 
     def connect(self):
         """Maak verbinding met de database."""
-        return sqlite3.connect(self.db_name)
+        return sqlite3.connect(self.get_dbnaam())
 
     def create_tables(self):
         """Maak de vereiste tabellen aan als ze nog niet bestaan."""
@@ -41,6 +43,7 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
                 )
             """)
             conn.commit()
+            conn.close()
             #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode
 
     # ---------- Gebruikers ----------
@@ -57,7 +60,9 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
         with self.connect() as conn:
             cur = conn.cursor()
             cur.execute("SELECT id, naam, telefoon_nummer FROM users")
-            return cur.fetchall()
+            result = cur.fetchall
+            conn.close()
+            return result
         #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
 
 
@@ -68,6 +73,7 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
             cur = conn.cursor()
             cur.execute("INSERT INTO scenarios (naam, icoon) VALUES (?, ?)", (naam, icoon))
             conn.commit()
+            conn.close()
         #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode
 
 
@@ -76,7 +82,9 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
         with self.connect() as conn:
             cur = conn.cursor()
             cur.execute("SELECT id, naam, icoon FROM scenarios")
-            return cur.fetchall()
+            result = cur.fetchall
+            conn.close()
+            return result
         #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
 
 
@@ -90,6 +98,7 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
                 (user_id, scenario_id)
             )
             conn.commit()
+            conn.close
         #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
 
     def get_users_for_scenario(self, scenario_id):
@@ -102,13 +111,17 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
                 JOIN scenario_users su ON su.user_id = u.id
                 WHERE su.scenario_id = ?
             """, (scenario_id,))
-            return cur.fetchall()
+            result = cur.fetchall
+            conn.close()
+            return result
     #REVIEW3: Good practice = sluit je databaseconnectie bij einde methode (zet je fethall in temp variabele)
+
 
 
 #REVIEW4: onderstaande code helemaal in commentaar => zie unit testen om te verbeteren.
 # Initialiseer de database
-db = Database(db_name)
+
+# db = Database("noodcentrale.db")
 """
 # Voor directe testen, uncomment de volgende regels:
 if __name__ == "__main__":
