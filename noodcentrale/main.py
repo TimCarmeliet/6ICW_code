@@ -1,14 +1,19 @@
 import tkinter as tk
 from controllers.controller import NoodcentraleController
 from views.view import NoodcentraleView
-#REVIEW 1: database naam in main programma in een constante steken + hier initialiseren niet in db_model
-#REVIEW 2: code aanpassen aan de gewijzigde controller attributen
+from models.db_model import NoodcentraleDB
+
 if __name__ == "__main__":
+    DBNAME = "noodcentrale.db"  # REVIEW 1: constante hier in main
+    db = NoodcentraleDB(DBNAME)
+
     root = tk.Tk()
-    # Maak controller zonder view
-    controller = NoodcentraleController(None)
-    # Maak view met controller
+
+    # Maak de hoofdcontroller aan met model
+    controller = NoodcentraleController(db)
+
+    # Maak de view aan en koppel aan controller
     view = NoodcentraleView(root, controller)
-    # Koppel view aan controller
-    controller.view = view
+    controller.set_view(view)
+
     root.mainloop()

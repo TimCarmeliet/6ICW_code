@@ -1,6 +1,6 @@
 import sqlite3
 
-class Database:  #Opzet van deze klasse is om het database model te vormen, niet om de database te zijn => REVIEW2: WIJZIG NAAM CLASS    
+class NoodcentraleDB:  #Opzet van deze klasse is om het database model te vormen, niet om de database te zijn => REVIEW2: WIJZIG NAAM CLASS    
     def __init__(self, db_name):
         self.__db_name = db_name
         self.create_tables()
@@ -121,7 +121,6 @@ class Database:  #Opzet van deze klasse is om het database model te vormen, niet
 #REVIEW4: onderstaande code helemaal in commentaar => zie unit testen om te verbeteren.
 # Initialiseer de database
 
-# db = Database("noodcentrale.db")
 """
 # Voor directe testen, uncomment de volgende regels:
 if __name__ == "__main__":
