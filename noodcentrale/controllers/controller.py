@@ -32,8 +32,21 @@ class GebruikerController(NoodcentraleController):
         super().__init__(view, model)
 
     def voeg_gebruiker_toe(self, naam, telefoon_nummer):
-        self.get_model().add_user(naam, telefoon_nummer)
-        self.get_view().toon_melding("Gebruiker toegevoegd!")
+        #controle op geldige ingave van naam
+        if naam == None:
+            self.get_view().toon_melding("Naam mag niet leeg zijn!")
+
+        #we testen de telefoonnummer minimaal omdat we ervan uitgaan dat deze correct wordt ingegeven
+        elif telefoon_nummer == None:
+            self.get_view().toon_melding("Telefoonnummer mag niet leeg zijn!")
+
+        elif isinstance(telefoon_nummer, int) == False:
+            self.get_view().toon_melding("Voer een geldig telefoonnummer in!")
+
+        #als alles in orde is wordt de naam en telefoonnummer toegevoegd aan de database
+        else:
+            self.get_model().add_user(naam, telefoon_nummer)
+            self.get_view().toon_melding("Gebruiker toegevoegd!")
 
     def haal_alle_gebruikers_op(self):
         return self.get_model().get_all_users()
